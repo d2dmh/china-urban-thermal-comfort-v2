@@ -1,0 +1,25 @@
+# Large data (from Zenodo, not tracked by git)
+input/epw/
+input/figure6/
+input/shape_coefficient/
+input/china_county_shp/
+input/china_city_boundary_shp/
+input/beijing_weibo/
+input/cluster_maps/
+
+# Pipeline outputs (generated at runtime)
+result/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
