@@ -53,7 +53,8 @@ Materials are organised for six pilot cities: **Beijing, Shanghai, Guangzhou, Sh
 | **`input/china_city_boundary_shp/`** | City-level administrative boundaries | External |
 | **`input/beijing_weibo/`** | Anonymised Sina Weibo summer check-in data (Beijing urban area); data description in file header | Collected |
 | **`input/cluster_maps/`** | Building prototype cluster assignment tables for 6 cities | Pre-computed |
-| **`input/population_data.zip`** | Building population SHP archives (6 cities, password-free ZIP); extract to `input/population/` before running `_export_grid.py` scripts | External |
+| **`input/china_city_shp/`** | Standard map of China — city-level boundaries (审图号 GS(2024)0650) | External |
+| **`input/china_ninedash_shp/`** | Standard map of China — nine-dash line (审图号 GS(2024)0650) | External |
 
 ### GeoJSON grid data
 
@@ -65,13 +66,12 @@ Pre-computed, anonymised grid-level GeoJSON files are included under:
 | `figure/figure2d_grid_data/` | 6-city grid heat data + core hull + core counties + index counties |
 | `figure/figure5_grid_data/` | 6-city grid bivariate data (heat + vulnerability) + boundaries |
 
-These GeoJSON files are the **public-ready outputs** of the `_export_grid.py` scripts. The `_public.py` figure scripts consume them directly and do **not** require the building SHP data.
+These GeoJSON files are pre-computed, anonymised grid data derived from private building SHP inputs. The `_public.py` figure scripts consume them directly and do **not** require the building SHP data.
 
 ## Data availability and legal notice
 
 We are **prohibited** from distributing original, precise building-geometry datasets under the _Surveying and Mapping Law of the People's Republic of China_ and relevant national data security regulations.
 
-- **Building population SHP files** are bundled as a password-free ZIP archive (`input/population_data.zip`). These are for local reference and are only needed to run the `_export_grid.py` scripts. These files should **not** be uploaded to public repositories.
 - **Grid GeoJSON data** is the public-facing, coordinate-adjusted product derived from the SHP inputs. The `_public.py` figure scripts use only these GeoJSON files and are fully reproducible without the private SHP layers.
 - **Weibo data** (`input/beijing_weibo/data.csv`) has been anonymised: every field except longitude, latitude, and venue type is replaced with `***` for all users except one reference record. A full data dictionary is included in the CSV file header.
 
@@ -103,25 +103,24 @@ We are **prohibited** from distributing original, precise building-geometry data
 
 ### `figure/` — Figure scripts
 
-| Figure | Script(s) — original / grid exporter / public | Description |
-|--------|------------------------------------------------|-------------|
+| Figure | Scripts | Description |
+|--------|---------|-------------|
 | 2-b | `figure2-b-去除文字.py` | 6-city per-capita discomfort grouped bar chart |
-| 2-c | `figure2-c.py` / `*_export_grid.py` / `*_public.py` | Beijing Weibo heat-complaint validation overlay |
-| 2-d | `figure2-d.py` / `*_export_grid.py` / `*_public.py` | 6-city 3D stacked heat discomfort maps |
+| 2-c | `figure2-c.py` / `figure2-c_public.py` | Beijing Weibo heat-complaint validation overlay |
+| 2-d | `figure2-d.py` / `figure2-d_public.py` | 6-city 3D stacked heat discomfort maps |
 | 3-a | `figure3-a.py` | Guangzhou vs Shenzhen climate KDE comparison |
 | 3-b | `figure3-b.py` | Guangzhou vs Shenzhen SET distribution |
 | 3-c | `figure3-c.py` | Building shape coefficient KDE (GZ + SZ) |
 | 4-l | `figure4-l.py` | Vertical thermal disparity — 3 Shenzhen archetypes |
 | 4-r | `figure4-r.py` | 24h discomfort profiles — top floor vs non-top |
-| 5 | `figure5.py` / `*_export_grid.py` / `*_public.py` | 6-city 3D 2×2 bivariate maps |
+| 5 | `figure5.py` / `figure5_public.py` | 6-city 3D 2×2 bivariate maps |
 | 6-a | `figure6-a.py` | Strategy trade-off: energy (TWh) vs discomfort (h) |
 | 6-b | `figure6-b.py` | Cooling capacity density raincloud plots |
 | 6-c | `figure6-c.py` | Typical midsummer city-wide cooling load curves |
 
-**Figures 2-c, 2-d, 5**: three variants per figure:
-- `figureX.py` — Original version (requires private SHP data)
-- `figureX_export_grid.py` — Run **once** on a machine with SHP access to generate GeoJSON grid data
-- `figureX_public.py` — Reproducible version (reads only GeoJSON, works without SHP)
+**Figures 2-c, 2-d, 5** have two variants:
+- `figureX.py` — Original version (requires private SHP data; for authors)
+- `figureX_public.py` — Public version (reads only GeoJSON grid data; fully reproducible)
 
 ## Paths and local configuration
 
@@ -154,8 +153,7 @@ thermal_comfort_analysis/
 │   ├── china_county_shp/
 │   ├── china_city_boundary_shp/
 │   ├── beijing_weibo/
-│   ├── cluster_maps/
-│   └── population_data.zip
+│   └── cluster_maps/
 ├── code/
 ├── figure/
 ├── figure6/
@@ -201,18 +199,9 @@ python figure/figure6-c.py
 
 Output figures are saved under `figure/*_output/` directories.
 
-### 6. (Optional) Regenerate GeoJSON grid data from SHP
+### 6. Notes on the original (private-data) scripts
 
-If you have access to the building SHP data and need to regenerate the grid GeoJSON files:
-
-```bash
-unzip input/population_data.zip -d input/population/
-
-# Run export scripts (each ~5–15 min per city)
-python figure/figure2-c_export_grid.py   # Beijing only
-python figure/figure2-d_export_grid.py   # 6 cities
-python figure/figure5_export_grid.py     # 6 cities
-```
+The `figureX.py` originals reference local paths to private building SHP and zhibiao data (`E:\GeiMingHao_all\`, `E:\cc data\...\population\`). These are **not distributed** and are retained only for author reference. Public reproducibility uses `figureX_public.py` with the provided GeoJSON grid data.
 
 ## Dependencies
 
@@ -231,7 +220,6 @@ python figure/figure5_export_grid.py     # 6 cities
 ## Status
 
 - Code and external data are complete for peer review.
-- Full building SHP data (6 cities, ~6 GB) is included as `input/population_data.zip` for transparency; it is not required for figure reproduction.
 - Additional QC utilities and the Shanghai full building inventory (~332 MB CSV) may be added as the release is finalised.
 
 ## Citation
