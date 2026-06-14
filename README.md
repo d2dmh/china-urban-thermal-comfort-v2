@@ -1,6 +1,6 @@
 # Urban Residential Nighttime Thermal Comfort under Climate Change
 
-[![DOI](https://img.shields.io/badge/Zenodo-doi-blue)](https://zenodo.org/) <!-- update DOI after upload -->
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20691709.svg)](https://doi.org/10.5281/zenodo.20691709)
 
 The code and data in this repository support the **peer review** of the manuscript:
 
@@ -12,7 +12,7 @@ This repository provides all code and external data needed to reproduce the figu
 
 ## Online resources
 
-- **Zenodo data package**: Full external inputs — EPW weather files, building energy data, shape coefficients, standard China maps, anonymised Weibo check-ins, cluster mappings, and prototype building SHP archives. See [Zenodo link → TBD] after publication.
+- **Zenodo data package**: Full external inputs — EPW weather files, building energy data, shape coefficients, standard China maps, anonymised Weibo check-ins, cluster mappings, and prototype building SHP archives. See [https://doi.org/10.5281/zenodo.20691709](https://doi.org/10.5281/zenodo.20691709).
 
 ## Workflow overview
 
