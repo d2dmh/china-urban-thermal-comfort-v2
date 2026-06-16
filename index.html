@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>China Urban Thermal Comfort - Code & Data</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f8f9fb;
+    --surface: #fff;
+    --border: #e2e6ed;
+    --text: #1a1d24;
+    --text-muted: #6b7280;
+    --accent: #2c5ea8;
+    --accent-light: #e8f0fa;
+    --code-bg: #f1f5f9;
+    --plot-bg: #fdf2f0;
+    --data-bg: #ecfdf5;
+    --zenodo: #9c4122;
+    --github: #24292f;
+  }
+  body { font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  /* Hero */
+  .hero { padding: 72px 0 48px; text-align: center; }
+  .hero h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.03em; color: #111827; line-height: 1.2; }
+  .hero p { margin-top: 12px; font-size: 1.1rem; color: var(--text-muted); max-width: 640px; margin-left: auto; margin-right: auto; }
+  .badges { display: flex; gap: 12px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
+  .badge { padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: transform 0.15s; }
+  .badge:hover { transform: translateY(-1px); }
+  .badge-zenodo { background: #fef3ee; color: var(--zenodo); border: 1px solid #f8d8c8; }
+  .badge-github { background: #f3f4f6; color: var(--github); border: 1px solid #d1d5db; }
+
+  /* Diagram */
+  .diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 36px 32px; margin: 32px 0; }
+  .diagram h2 { font-size: 1.15rem; font-weight: 600; margin-bottom: 24px; color: #374151; text-transform: uppercase; letter-spacing: 0.04em; }
+  .flow { display: flex; gap: 0; align-items: stretch; flex-wrap: wrap; justify-content: center; }
+  .flow-col { flex: 1; min-width: 220px; max-width: 280px; padding: 20px 16px; border-radius: 10px; }
+  .flow-col h3 { font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px; }
+  .flow-col ul { list-style: none; font-size: 0.88rem; }
+  .flow-col ul li { padding: 5px 0; color: #4b5563; display: flex; align-items: center; gap: 6px; }
+  .flow-col ul li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .col-data { background: var(--data-bg); }
+  .col-data h3 { color: #065f46; }
+  .col-data li::before { background: #10b981; }
+  .col-code { background: var(--code-bg); }
+  .col-code h3 { color: #1e40af; }
+  .col-code li::before { background: #3b82f6; }
+  .col-plot { background: var(--plot-bg); }
+  .col-plot h3 { color: #991b1b; }
+  .col-plot li::before { background: #ef4444; }
+  .flow-arrow { display: flex; align-items: center; font-size: 1.4rem; color: #cbd5e1; flex-shrink: 0; padding: 0 4px; }
+
+  /* Tables */
+  .table-section { margin: 40px 0; }
+  .table-section h2 { font-size: 1.05rem; font-weight: 600; color: #374151; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+  table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; font-size: 0.88rem; }
+  th { background: #f9fafb; padding: 10px 16px; text-align: left; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: #6b7280; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 16px; border-bottom: 1px solid #f3f4f6; color: #374151; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .tag-code { background: #dbeafe; color: #1e40af; }
+  .tag-plot { background: #fee2e2; color: #991b1b; }
+  .tag-data { background: #d1fae5; color: #065f46; }
+  .tag-pub { background: #ede9fe; color: #5b21b6; }
+  .code-ref { font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.8rem; background: #f1f5f9; padding: 1px 5px; border-radius: 3px; }
+
+  /* Data list */
+  .data-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .data-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+  .data-card h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; }
+  .data-card .meta { font-size: 0.78rem; color: var(--text-muted); }
+
+  /* Footer */
+  .footer { text-align: center; padding: 48px 0 32px; color: var(--text-muted); font-size: 0.82rem; }
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 1.8rem; }
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); padding: 8px 0; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <section class="hero">
+    <h1>Urban Residential Nighttime Thermal Comfort<br>under Climate Change</h1>
+    <p>Code and data for reproducing the paper. 6 Chinese cities, 7 climate scenarios, SET-based overheating risk analysis with building-energy-model validation.</p>
+    <div class="badges">
+      <a href="https://github.com/d2dmh/china-urban-thermal-comfort-v2" class="badge badge-github">GitHub Repository</a>
+      <a href="https://doi.org/10.5281/zenodo.20691709" class="badge badge-zenodo">Zenodo Data Package</a>
+    </div>
+  </section>
+
+  <!-- Overview diagram -->
+  <section class="diagram">
+    <h2>How Data Flows Through the Project</h2>
+    <div class="flow">
+      <div class="flow-col col-data">
+        <h3>External Data</h3>
+        <ul>
+          <li>EPW Weather (42 files)</li>
+          <li>Building Energy Excel (6 cities)</li>
+          <li>Shape Coefficient</li>
+          <li>China Map SHP</li>
+          <li>Cluster Maps</li>
+          <li>Weibo Check-in Data</li>
+        </ul>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-col col-code">
+        <h3>Model Code</h3>
+        <ul>
+          <li>Main Pipeline (code/)</li>
+          <li>SET Computation</li>
+          <li>Per-Capita Aggregation</li>
+          <li>Pivot Tables</li>
+          <li>Figure 6 Pipeline</li>
+        </ul>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-col col-plot">
+        <h3>Plotting Code</h3>
+        <ul>
+          <li>Figure 2: Spatial Maps</li>
+          <li>Figure 3: Climate &amp; Shape</li>
+          <li>Figure 4: Vertical &amp; Hourly</li>
+          <li>Figure 5: Bivariate 3D</li>
+          <li>Figure 6: Energy Trade-offs</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Code table -->
+  <section class="table-section">
+    <h2>Code Inventory</h2>
+    <table>
+      <thead>
+        <tr><th>Category</th><th>Script</th><th>Role</th><th>Input Data</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="5"><span class="tag tag-code">Model</span></td>
+          <td><span class="code-ref">code/pipeline/step1_compute_set.py</span></td>
+          <td>Compute SET for every building &times; storey &times; hour; aggregate per-capita discomfort hours</td>
+          <td>EnergyPlus CSVs, EPW, cluster maps, population SHP</td>
+        </tr>
+        <tr>
+          <td><span class="code-ref">code/pipeline/step2_pivot_tables.py</span></td>
+          <td>Generate cross-comparison pivot tables from step 1 results</td>
+          <td>Step 1 output (<span class="code-ref">summary_uncomfortable_hours.csv</span>)</td>
+        </tr>
+        <tr>
+          <td><span class="code-ref">figure6/step1_compute_set.py</span></td>
+          <td>SET computation for 6 cities &times; 6 AC strategies (Figure 6 pipeline)</td>
+          <td>EnergyPlus CSVs, EPW</td>
+        </tr>
+        <tr>
+          <td><span class="code-ref">figure6/step3_energy_capacity.py</span></td>
+          <td>Extract per-building energy consumption, cooling capacity, peak load</td>
+          <td><span class="code-ref">input/figure6/*_building_energy.xlsx</span></td>
+        </tr>
+        <tr>
+          <td><span class="code-ref">figure6/step4_citywide_load_curves.py</span></td>
+          <td>Compute city-wide GW-scale cooling load curves; generate pickle caches</td>
+          <td>Step 3 output, EPW</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Figure scripts table -->
+  <section class="table-section">
+    <h2>Figure Scripts & Their Data</h2>
+    <table>
+      <thead>
+        <tr><th>Figure</th><th>Script</th><th>Description</th><th>Required Data</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2-b</td>
+          <td><span class="code-ref">figure2-b-去除文字.py</span></td>
+          <td>6-city per-capita discomfort grouped bar chart (all RCP scenarios)</td>
+          <td>HourlyStats xlsx (pipeline), cluster maps, EPW, building pop attributes</td>
+        </tr>
+        <tr>
+          <td>2-c</td>
+          <td><span class="code-ref">figure2-c.py</span> <span class="tag tag-pub">public</span></td>
+          <td>Beijing Weibo heat-complaint validation overlay</td>
+          <td>Beijing SHP, zhibiao CSV, <span class="code-ref">beijing_weibo/data.csv</span>, county SHP</td>
+        </tr>
+        <tr>
+          <td>2-d</td>
+          <td><span class="code-ref">figure2-d.py</span> <span class="tag tag-pub">public</span></td>
+          <td>6-city 3D stacked heat discomfort maps (discrete color scale)</td>
+          <td>6-city SHP, zhibiao CSV, county SHP, city boundary SHP</td>
+        </tr>
+        <tr>
+          <td>3-a</td>
+          <td><span class="code-ref">figure3-a.py</span></td>
+          <td>Guangzhou vs Shenzhen climate KDE comparison</td>
+          <td>EPW files (GZ + SZ, all scenarios)</td>
+        </tr>
+        <tr>
+          <td>3-b</td>
+          <td><span class="code-ref">figure3-b.py</span></td>
+          <td>Guangzhou vs Shenzhen SET distribution</td>
+          <td>Pipeline output (SET hourly xlsx)</td>
+        </tr>
+        <tr>
+          <td>3-c</td>
+          <td><span class="code-ref">figure3-c.py</span></td>
+          <td>Building shape coefficient KDE (Guangzhou, Shenzhen)</td>
+          <td><span class="code-ref">shape_coefficient/*.xlsx</span></td>
+        </tr>
+        <tr>
+          <td>4-l</td>
+          <td><span class="code-ref">figure4-l.py</span></td>
+          <td>Vertical thermal disparity (3 Shenzhen archetypes)</td>
+          <td><span class="code-ref">summary_uncomfortable_hours.csv</span> (pipeline output)</td>
+        </tr>
+        <tr>
+          <td>4-r</td>
+          <td><span class="code-ref">figure4-r.py</span></td>
+          <td>24h discomfort profiles: top floor vs non-top</td>
+          <td><span class="code-ref">GeiMingHao_27Degree</span> CSVs, cluster map, EPW</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><span class="code-ref">figure5.py</span> <span class="tag tag-pub">public</span></td>
+          <td>6-city 3D 2&times;2 bivariate maps (heat &times; vulnerability)</td>
+          <td>6-city SHP, pop_lookup CSV, zhibiao CSV, county SHP, city SHP</td>
+        </tr>
+        <tr>
+          <td>6-a</td>
+          <td><span class="code-ref">figure6-a.py</span></td>
+          <td>Strategy trade-off scatter: energy (TWh) vs discomfort (h)</td>
+          <td><span class="code-ref">input/figure6/</span> (building energy xlsx + per-capita CSV)</td>
+        </tr>
+        <tr>
+          <td>6-b</td>
+          <td><span class="code-ref">figure6-b.py</span></td>
+          <td>Cooling capacity density raincloud plots (W/m&sup2;)</td>
+          <td><span class="code-ref">energy_capacity_summary.csv</span> + building energy xlsx</td>
+        </tr>
+        <tr>
+          <td>6-c</td>
+          <td><span class="code-ref">figure6-c.py</span></td>
+          <td>Typical midsummer city-wide cooling load curves</td>
+          <td><span class="code-ref">*_curves.pkl</span> caches, EPW, grid load xlsx</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Data packages -->
+  <section class="table-section">
+    <h2>Input Data Packages</h2>
+    <div class="data-grid">
+      <div class="data-card">
+        <h4>EPW Weather Files</h4>
+        <div class="meta">42 files, 64 MB</div>
+        <div class="meta" style="margin-top:4px;">6 cities &times; 7 scenarios (2020 + 2040/2060 &times; RCP 2.6/4.5/8.5)</div>
+        <div class="meta" style="margin-top:4px;">Used by: Step 1, Figure 2-b, 3-a, 4-r, 6-c</div>
+      </div>
+      <div class="data-card">
+        <h4>Building Energy Excel</h4>
+        <div class="meta">6 files, 122 MB</div>
+        <div class="meta" style="margin-top:4px;">Per-building annual cooling energy (kWh) for 6 strategies</div>
+        <div class="meta" style="margin-top:4px;">Used by: Figure 6-a, 6-b</div>
+      </div>
+      <div class="data-card">
+        <h4>Energy Capacity Summary</h4>
+        <div class="meta">1 CSV, 1.8 MB</div>
+        <div class="meta" style="margin-top:4px;">Per-building capacity (W) and energy (kWh) by strategy &amp; scenario</div>
+        <div class="meta" style="margin-top:4px;">Used by: Figure 6-b</div>
+      </div>
+      <div class="data-card">
+        <h4>GW Load Curve Caches</h4>
+        <div class="meta">6 pickle files, 1.2 MB</div>
+        <div class="meta" style="margin-top:4px;">City-wide GW-scale load curves by date &amp; strategy</div>
+        <div class="meta" style="margin-top:4px;">Used by: Figure 6-c</div>
+      </div>
+      <div class="data-card">
+        <h4>Grid Load Data</h4>
+        <div class="meta">1 Excel, &lt;1 MB</div>
+        <div class="meta" style="margin-top:4px;">Provincial 24h electricity load profiles (reference curves)</div>
+        <div class="meta" style="margin-top:4px;">Used by: Figure 6-c</div>
+      </div>
+      <div class="data-card">
+        <h4>Shape Coefficient</h4>
+        <div class="meta">2 Excel files, 31 MB</div>
+        <div class="meta" style="margin-top:4px;">Building footprint, height, shape coefficient, age (GZ + SZ)</div>
+        <div class="meta" style="margin-top:4px;">Used by: Figure 3-c</div>
+      </div>
+      <div class="data-card">
+        <h4>China Standard Maps</h4>
+        <div class="meta">20 SHP files, 37 MB</div>
+        <div class="meta" style="margin-top:4px;">County / city / nine-dash line boundaries (GS 2024-0650)</div>
+        <div class="meta" style="margin-top:4px;">Used by: Figure 2-c, 2-d, 5 (original), fig2-1</div>
+      </div>
+      <div class="data-card">
+        <h4>Beijing Weibo Data</h4>
+        <div class="meta">1 CSV, 327 KB</div>
+        <div class="meta" style="margin-top:4px;">Anonymised summer check-in records (one reference user intact)</div>
+        <div class="meta" style="margin-top:4px;">Used by: Figure 2-c</div>
+      </div>
+      <div class="data-card">
+        <h4>Cluster Maps</h4>
+        <div class="meta">6 CSV, 67 MB</div>
+        <div class="meta" style="margin-top:4px;">BuildingID &rarr; LandNum, Cluster, Fnum assignments</div>
+        <div class="meta" style="margin-top:4px;">Used by: Step 1, Figure 2-b, 4-r</div>
+      </div>
+      <div class="data-card">
+        <h4>GeoJSON Grid Data</h4>
+        <div class="meta">64 files, 7 MB</div>
+        <div class="meta" style="margin-top:4px;">Pre-computed anonymised grid (from private SHP)</div>
+        <div class="meta" style="margin-top:4px;">Used by: Figure 2-c/d/5 public scripts</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Data DOI: <a href="https://doi.org/10.5281/zenodo.20691709">10.5281/zenodo.20691709</a> &middot; Code: <a href="https://github.com/d2dmh/china-urban-thermal-comfort-v2">github.com/d2dmh/china-urban-thermal-comfort-v2</a></p>
+  </footer>
+
+</div>
+</body>
+</html>
