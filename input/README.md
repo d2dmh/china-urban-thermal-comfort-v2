@@ -1,6 +1,6 @@
 # Input Data
 
-All external data required to run the pipelines and figures. Download the full package from **Zenodo** ([DOI → TBD]) and extract to `input/`.
+All external data required to run the pipelines and figures. Download from **[Zenodo](https://doi.org/10.5281/zenodo.20691709)** (10.5281/zenodo.20691709) and extract to `input/`.
 
 ## Directory structure
 
@@ -32,6 +32,12 @@ input/
 ├── china_city_boundary_shp/          City-level administrative boundaries
 │   └── city.{shp,shx,dbf,prj,cpg}
 │
+├── china_city_shp/                   Standard map of China — city boundaries (市)
+│   └── 中国_市_Albers.{shp,shx,dbf,prj,cpg}
+│
+├── china_ninedash_shp/               Standard map of China — nine-dash line (九段线)
+│   └── 九段线_Albers.{shp,shx,dbf,prj,cpg}
+│
 ├── beijing_weibo/                    Anonymised Weibo check-in data
 │   └── data.csv                       Data dictionary in file header (see § Weibo Data below)
 │
@@ -43,8 +49,11 @@ input/
 │   ├── cluster_440300_深圳市.csv
 │   └── cluster_350200_厦门市.csv
 │
-└── population_data.zip               Building population SHP archives (911 MB)
-                                       Extract to input/population/ before running _export_grid.py scripts
+├── china_city_shp/                   Standard map of China — city boundaries
+│   └── 中国_市_Albers.{shp,shx,dbf,prj,cpg}   (审图号 GS(2024)0650)
+│
+└── china_ninedash_shp/               Standard map of China — nine-dash line
+    └── 九段线_Albers.{shp,shx,dbf,prj,cpg}   (审图号 GS(2024)0650)
 ```
 
 ## File descriptions
@@ -75,7 +84,14 @@ Building shape coefficient (体型系数) data for Guangzhou and Shenzhen. Colum
 
 ### Standard map shapefiles
 
-China county-level and city-level boundary shapefiles in Albers projection (审图号 GS(2024)0650). Used for spatial masking and core-area identification in Figures 2-c, 2-d, and 5.
+Three layers of China standard map boundary shapefiles in Albers projection (审图号 GS(2024)0650):
+
+| Directory | Layer | Used by |
+|-----------|-------|---------|
+| `china_county_shp/` | County-level boundaries | Figures 2-c, 2-d, 5 |
+| `china_city_boundary_shp/` | City-level administrative boundaries | Figures 2-d, 5 |
+| `china_city_shp/` | City-level boundaries (市) | `fig2-1` |
+| `china_ninedash_shp/` | Nine-dash line (九段线) | `fig2-1` |
 
 ### Weibo data (`beijing_weibo/`)
 
@@ -93,17 +109,6 @@ Data source: Sina Weibo summer (Jun–Aug) check-in data, Beijing urban area. Us
 
 CSV files mapping each building (`BuildingID`) to its prototype cluster attributes: `Cluster` (building type cluster), `LandNum` (0=low-rise, 1=mid-rise, 2=high-rise), `Fnum` (number of storeys), `landUseTyp` (land use type). The residential subset (`landUseTyp` starting with "Residential") is used for per-capita population weighting.
 
-### Population SHP data (`population_data.zip`)
+### Standard map shapefiles (city-level and nine-dash line)
 
-Password-free ZIP archive containing building population shapefiles for 6 cities. Directory structure after extraction:
-
-```
-input/population/
-├── 110000Beijing_shp/       Beijing (English-named folder for GDAL compatibility)
-├── 310000上海市/             Shanghai
-├── 420000湖北省/             Wuhan
-├── 440000广东省/             Guangzhou + Shenzhen
-└── 350000福建省/             Xiamen
-```
-
-Each city folder contains a building polygon shapefile (`.shp`, `.shx`, `.dbf`, `.prj`) and an attributes CSV (`_building_pop_attributes.csv`). These files are required **only** for running the `_export_grid.py` scripts. The `_public.py` figure scripts use pre-computed GeoJSON grid data and do **not** require these SHP files.
+Additional China standard map layers in Albers projection (审图号 GS(2024)0650): city-level boundaries (`china_city_shp/`) and nine-dash line (`china_ninedash_shp/`). Used by `fig2-1地图-建筑气候区划.py`.
