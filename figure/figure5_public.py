@@ -32,7 +32,7 @@ warnings.filterwarnings("ignore")
 # ==================== Configuration ====================
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 GRID_DATA_DIR = os.path.join(SCRIPT_DIR, "figure5_grid_data")
-OUTPUT_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "figure5_output")
+OUTPUT_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "output/figure5")
 
 CITY_EN_LIST = ["Beijing", "Shanghai", "Guangzhou", "Shenzhen", "Wuhan", "Xiamen"]
 

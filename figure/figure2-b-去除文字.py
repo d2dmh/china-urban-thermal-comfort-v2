@@ -19,7 +19,7 @@ ROOT_SCENARIO_BASE = os.path.join(PROJECT_ROOT, "results", "27Degree", "set_calc
 
 # EPW weather files
 EPW_ROOT_DIR = os.path.join(DATA_DIR, "input data", "epw_files")
-TARGET_FIG_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "figure2b_output")
+TARGET_FIG_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "output/figure2")
 
 # ================= 1.5 ⭐ 图表核心参数调整区 ⭐ =================
 

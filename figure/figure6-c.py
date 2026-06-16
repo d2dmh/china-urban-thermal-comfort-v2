@@ -254,10 +254,17 @@ def _epw_daily_features(pinyin):
     return daily
 
 def _load_city_curves_cached(pinyin):
-    cache_file = os.path.join(CACHE_DIR, f'{pinyin}_curves.pkl')
+    cache_file = os.path.join(CACHE_DIR, f'{pinyin}_curves.csv')
     if not os.path.exists(cache_file):
         raise FileNotFoundError(f"Cache not found: {cache_file}.")
-    return pd.read_pickle(cache_file)
+    df = pd.read_csv(cache_file)
+    curves = {}
+    for _, row in df.iterrows():
+        date = str(row['Date'])
+        strat = row['Strategy']
+        vals = row[[f'H{i}' for i in range(24)]].values.astype(float)
+        curves.setdefault(date, {})[strat] = vals
+    return curves
 
 # ============================================================
 # 主执行流程

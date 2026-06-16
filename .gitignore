@@ -8,6 +8,8 @@ input/china_city_shp/
 input/china_ninedash_shp/
 input/beijing_weibo/
 input/cluster_maps/
+input/beijing_building_data/
+input/pipeline_outputs/
 
 # Pipeline outputs (generated at runtime)
 result/
@@ -25,3 +27,4 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+Sleep+UBEM 0614.docx

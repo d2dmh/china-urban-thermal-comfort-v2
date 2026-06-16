@@ -86,13 +86,14 @@ CLIMATE_CONFIG["夏热冬暖气候区"]["cities"] = hot_summer_warm_winter_citie
 CLIMATE_CONFIG["温和气候区"]["cities"] = temperate_cities
 
 # ================= 3. 环境变量与路径 =================
-proj_path = r"E:\anacondaa\envs\myproj\Library\share\proj"
-os.environ['PROJ_LIB'] = proj_path
-os.environ['PROJ_DATA'] = proj_path
-pyproj.datadir.set_data_dir(proj_path)
+_PROJ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# PROJ_LIB: set via environment or skip (modern pyproj auto-detects)
+if 'PROJ_LIB' not in os.environ:
+    try: os.environ['PROJ_LIB'] = r'E:\anacondaa\envs\myproj\Library\share\proj'
+    except: pass
 
-shp_path_city = r"E:\中国标准地图-审图号GS(2024)0650号-shp格式\面格式\中国_市_Albers.shp"
-shp_path_ninedash = r"E:\中国标准地图-审图号GS(2024)0650号-shp格式\线格式\九段线_Albers.shp"
+shp_path_city = os.path.join(_PROJ, "input", "china_city_shp", "中国_市_Albers.shp")
+shp_path_ninedash = os.path.join(_PROJ, "input", "china_ninedash_shp", "九段线_Albers.shp")
 
 # ================= 4. 数据处理与空间智能补全 =================
 gdf = gpd.read_file(shp_path_city)

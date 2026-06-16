@@ -23,7 +23,7 @@ class CONFIG:
     
     weibo_csv = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "other data", "beijing_weibo", "data.csv")
     sim_shp_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "other data", "population", "110000Beijing_shp", "T110000_Beijing_building_pop.shp")
-    sim_csv_path = r"E:\GeiMingHao_all\GeiMingHao\zhibiao\北京市_zhibiao_result_all.csv"
+    sim_csv_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "input", "pipeline_outputs", "zhibiao", "北京市_zhibiao_result_all.csv")
     shp_base = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "other data", "china_county_shp", "中国_县_Albers.shp")
     
     # ---------------- 2. 版面与排版比例 ----------------

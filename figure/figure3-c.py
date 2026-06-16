@@ -29,7 +29,7 @@ def remove_outliers_3sigma(df, col_name):
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
 input_dir = os.path.join(PROJECT_ROOT, "data", "input data", "shape_coefficient")
-output_dir = os.path.join(os.path.dirname(SCRIPT_DIR), "figure3c_output")
+output_dir = os.path.join(os.path.dirname(SCRIPT_DIR), "output/figure3")
 os.makedirs(output_dir, exist_ok=True)
 
 cities_map = {"广州市": "广州", "深圳市": "深圳"}

@@ -17,7 +17,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
 SUMMARY_PATH = os.path.join(PROJECT_ROOT, "results", "27Degree", "set_calculations",
                             "summary_uncomfortable_hours.csv")
-OUT_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "figure4l_output")
+OUT_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "output/figure4")
 
 CITY = "shen1zhen4shi4"
 SCENARIOS = ["2020 Baseline", "2040 RCP 8.5", "2060 RCP 8.5"]

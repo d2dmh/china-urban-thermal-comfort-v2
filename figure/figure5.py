@@ -35,21 +35,23 @@ CITY_SPECIFIC_PARAMS = {
     "武汉市": {"grid_sz": 1000, "min_grids": 150, "density": 0.15},
 }
 
-# ================== 0b. 数据路径与辅助函数（来自笔记本 Cell 1-2） ==================
-_POP_BASE = r"E:\cc data\github\thermal_comfort_analysis\data\other data\population"
+# ================== 0b. 数据路径（来自笔记本 Cell 1-2） ==================
+_PROJ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_POP_BASE = os.path.join(_PROJ, "input", "population")
+_PPL = os.path.join(_PROJ, "input", "pipeline_outputs")
 cities_info = {
-    "武汉市": {"shp": os.path.join(_POP_BASE, "420000湖北省", "T420100_武汉市_building_pop.shp"), "pop": r"E:\GeiMingHao_all\总表\武汉市_pop_lookup_summary.csv", "heat": r"E:\GeiMingHao_all\GeiMingHao\zhibiao\武汉市_zhibiao_result_all.csv"},
-    "厦门市": {"shp": os.path.join(_POP_BASE, "350000福建省", "T350200_厦门市_building_pop.shp"), "pop": r"E:\GeiMingHao_all\总表\厦门市_pop_lookup_summary.csv", "heat": r"E:\GeiMingHao_all\GeiMingHao\zhibiao\厦门市_zhibiao_result_all.csv"},
-    "北京市": {"shp": os.path.join(_POP_BASE, "110000Beijing_shp", "T110000_Beijing_building_pop.shp"), "pop": r"E:\GeiMingHao_all\总表\北京市_pop_lookup_summary.csv", "heat": r"E:\GeiMingHao_all\GeiMingHao\zhibiao\北京市_zhibiao_result_all.csv"},
-    "上海市": {"shp": os.path.join(_POP_BASE, "310000上海市", "T310000_上海市_building_pop.shp"), "pop": r"E:\GeiMingHao_all\总表\上海市_pop_lookup_summary.csv", "heat": r"E:\GeiMingHao_all\GeiMingHao\zhibiao\上海市_zhibiao_result_all.csv"},
-    "广州市": {"shp": os.path.join(_POP_BASE, "440000广东省", "T440100_广州市_building_pop.shp"), "pop": r"E:\GeiMingHao_all\总表\广州市_pop_lookup_summary.csv", "heat": r"E:\GeiMingHao_all\GeiMingHao\zhibiao\广州市_zhibiao_result_all.csv"},
-    "深圳市": {"shp": os.path.join(_POP_BASE, "440000广东省", "T440300_深圳市_building_pop.shp"), "pop": r"E:\GeiMingHao_all\总表\深圳市_pop_lookup_summary.csv", "heat": r"E:\GeiMingHao_all\GeiMingHao\zhibiao\深圳市_zhibiao_result_all.csv"}
+    "武汉市": {"shp": os.path.join(_POP_BASE, "420000湖北省", "T420100_武汉市_building_pop.shp"), "pop": os.path.join(_PPL, "pop_lookup", "武汉市_pop_lookup_summary.csv"), "heat": os.path.join(_PPL, "zhibiao", "武汉市_zhibiao_result_all.csv")},
+    "厦门市": {"shp": os.path.join(_POP_BASE, "350000福建省", "T350200_厦门市_building_pop.shp"), "pop": os.path.join(_PPL, "pop_lookup", "厦门市_pop_lookup_summary.csv"), "heat": os.path.join(_PPL, "zhibiao", "厦门市_zhibiao_result_all.csv")},
+    "北京市": {"shp": os.path.join(_POP_BASE, "110000Beijing_shp", "T110000_Beijing_building_pop.shp"), "pop": os.path.join(_PPL, "pop_lookup", "北京市_pop_lookup_summary.csv"), "heat": os.path.join(_PPL, "zhibiao", "北京市_zhibiao_result_all.csv")},
+    "上海市": {"shp": os.path.join(_POP_BASE, "310000上海市", "T310000_上海市_building_pop.shp"), "pop": os.path.join(_PPL, "pop_lookup", "上海市_pop_lookup_summary.csv"), "heat": os.path.join(_PPL, "zhibiao", "上海市_zhibiao_result_all.csv")},
+    "广州市": {"shp": os.path.join(_POP_BASE, "440000广东省", "T440100_广州市_building_pop.shp"), "pop": os.path.join(_PPL, "pop_lookup", "广州市_pop_lookup_summary.csv"), "heat": os.path.join(_PPL, "zhibiao", "广州市_zhibiao_result_all.csv")},
+    "深圳市": {"shp": os.path.join(_POP_BASE, "440000广东省", "T440300_深圳市_building_pop.shp"), "pop": os.path.join(_PPL, "pop_lookup", "深圳市_pop_lookup_summary.csv"), "heat": os.path.join(_PPL, "zhibiao", "深圳市_zhibiao_result_all.csv")}
 }
 
 POP_COLS = ['BuildingID', '均价', 'age0_2', 'age65abv_2']
 HEAT_COLS = ['BuildingID', '人均受灾小时数_2020', '人均受灾小时数_2040-rcp8.5', '人均受灾小时数_2060-rcp8.5']
 CITY_BOUNDS_SHP = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "data", "other data", "china_city_boundary_shp", "city.shp")
-OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "figure5_output")
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output/figure5")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # 2x2 bivariate color scheme: X=heat (Red), Y=vulnerability (Blue)

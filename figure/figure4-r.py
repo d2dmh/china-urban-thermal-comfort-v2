@@ -41,7 +41,7 @@ PROJ = os.path.dirname(os.path.dirname(SCRIPT_DIR))
 SIM_BASE = os.path.join(PROJ, "data", "input data", "GeiMingHao_27Degree", "GeiMingHao_IndoorEnv")
 EPW_DIR = os.path.join(PROJ, "data", "input data", "epw_files")
 CLUSTER_MAP = os.path.join(PROJ, "data", "other data", "cluster_maps", "cluster_440300_深圳市.csv")
-OUT_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "figure4r_output")
+OUT_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "output/figure4")
 
 CITY = "shen1zhen4shi4"
 BLDG_TYPES = [2, 1, 0]
