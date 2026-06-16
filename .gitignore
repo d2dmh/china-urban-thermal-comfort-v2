@@ -13,6 +13,15 @@ input/pipeline_outputs/
 
 # Pipeline outputs (generated at runtime)
 result/
+output/
+figure2c_output/
+figure2d_output/
+figure5_output/
+figure4l_output/
+figure4r_output/
+figure6a_output/
+figure6b_output/
+figure6c_output/
 
 # Python
 __pycache__/
@@ -27,4 +36,7 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+input/GeiMingHao_27Degree/
 Sleep+UBEM 0614.docx
+input/population_csv/
+input/beijing_building_data/

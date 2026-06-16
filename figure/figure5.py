@@ -37,7 +37,7 @@ CITY_SPECIFIC_PARAMS = {
 
 # ================== 0b. 数据路径（来自笔记本 Cell 1-2） ==================
 _PROJ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-_POP_BASE = os.path.join(_PROJ, "input", "population")
+_POP_BASE = os.path.join(_PROJ, "input", "population_csv")
 _PPL = os.path.join(_PROJ, "input", "pipeline_outputs")
 cities_info = {
     "武汉市": {"shp": os.path.join(_POP_BASE, "420000湖北省", "T420100_武汉市_building_pop.shp"), "pop": os.path.join(_PPL, "pop_lookup", "武汉市_pop_lookup_summary.csv"), "heat": os.path.join(_PPL, "zhibiao", "武汉市_zhibiao_result_all.csv")},

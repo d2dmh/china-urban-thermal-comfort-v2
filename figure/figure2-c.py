@@ -19,7 +19,7 @@ warnings.filterwarnings("ignore")
 # ==============================================================================
 class CONFIG:
     # ---------------- 1. 路径与环境设置 ----------------
-    output_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "figure2c_output")
+    output_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "output/figure2")
     
     weibo_csv = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "other data", "beijing_weibo", "data.csv")
     sim_shp_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "other data", "population", "110000Beijing_shp", "T110000_Beijing_building_pop.shp")

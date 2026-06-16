@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -8,13 +10,13 @@ import seaborn as sns
 # 【核心功能】：True 显示全部文字/数字；False 去除所有文字/数字（仅保留刻度线和图形）
 SHOW_TEXT =True
 
-# ================= 1. 环境与 SCI 绘图风格设置 =================
-plt.rcParams['font.sans-serif'] = ['SimSun', 'Times New Roman', 'SimHei']  
+# ================= 1. Environment & SCI style =================
+plt.rcParams['xtick.direction'] = 'out'
+plt.rcParams['ytick.direction'] = 'out'
+sns.set_style("ticks")
+# MUST set font AFTER sns.set_style — seaborn resets font.sans-serif
+plt.rcParams['font.sans-serif'] = ['SimHei'] + plt.rcParams['font.sans-serif']
 plt.rcParams['axes.unicode_minus'] = False
-# 【修改点 1】：全局设定刻度线朝外
-plt.rcParams['xtick.direction'] = 'out'  
-plt.rcParams['ytick.direction'] = 'out'  
-sns.set_style("ticks")  
 
 # ================= 2. 数据清洗函数 =================
 def remove_outliers_3sigma(df, col_name):
@@ -27,9 +29,9 @@ def remove_outliers_3sigma(df, col_name):
 
 # ================= 3. 数据读取与预处理 =================
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
-input_dir = os.path.join(PROJECT_ROOT, "data", "input data", "shape_coefficient")
-output_dir = os.path.join(os.path.dirname(SCRIPT_DIR), "output/figure3")
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
+input_dir = os.path.join(PROJECT_ROOT, "input", "shape_coefficient")
+output_dir = os.path.join(PROJECT_ROOT, "output", "figure3")
 os.makedirs(output_dir, exist_ok=True)
 
 cities_map = {"广州市": "广州", "深圳市": "深圳"}
@@ -116,7 +118,7 @@ else:
         safe_filename = f"{display_name.split(' ')[0]}_KDE.png".replace("/", "_")
         save_path = os.path.join(output_dir, safe_filename)
         plt.savefig(save_path, bbox_inches='tight', dpi=600)
-        print(f"✅ 已单独输出图表: {save_path}")
+        print(f"[OK] {save_path}")
         
         # 弹窗显示当前小图，关闭弹窗后继续生成下一张
-        plt.show()
+        plt.close()

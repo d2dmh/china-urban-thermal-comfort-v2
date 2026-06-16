@@ -22,7 +22,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file
 _PROJ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 COUNTY_SHP_PATH = os.path.join(_PROJ, "data", "other data", "china_county_shp", "中国_县_Albers.shp")
 CITY_BOUNDS_SHP = os.path.join(_PROJ, "input", "china_city_boundary_shp", "city.shp")
-_POP = os.path.join(_PROJ, "input", "population")
+_POP = os.path.join(_PROJ, "input", "population_csv")
 _PPL = os.path.join(_PROJ, "input", "pipeline_outputs")
 
 cities_info = {

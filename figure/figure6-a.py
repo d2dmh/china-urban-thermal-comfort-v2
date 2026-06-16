@@ -20,13 +20,13 @@ warnings.filterwarnings('ignore') # 忽略字体与全面解析警告
 
 # -------------------------- [1. 路径与模式设置] --------------------------
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
-DATA_DIR = os.path.join(PROJECT_ROOT, "data", "input data", "figure6")
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
+DATA_DIR = os.path.join(PROJECT_ROOT, "input", "figure6")
 EC_DIR = DATA_DIR   # {City}_building_energy.xlsx
 PC_PATH = os.path.join(DATA_DIR, "per_capita_hours_summary.csv")
-FIG_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "figure6a_output") 
+FIG_DIR = os.path.join(PROJECT_ROOT, "output", "figure6") 
 
-REMOVE_ALL_TEXT = True # 【开关】设为 True 时，一键去除所有坐标轴、标题、图例文字，仅保留纯图形
+REMOVE_ALL_TEXT = False # 【开关】设为 True 时，一键去除所有坐标轴、标题、图例文字，仅保留纯图形
 
 
 # -------------------------- [2. 画布比例与画质 (高度压缩)] --------------------------
@@ -145,8 +145,8 @@ def build_tradeoff_data():
     pc = pd.read_csv(PC_PATH, encoding='utf-8-sig')
     
     STRAT_NAMES = {
-        '策略3 (FixedCap_AllDay_32_27)': 'S2',  
-        '策略2 (FixedCap_Evening26)': 'S3',     
+        '策略3 (FixedCap_AllDay_32_27)': 'S2',
+        '策略2 (FixedCap_Evening26)': 'S3',
         '策略4 (FixedCap_AllDay_32_26)': 'S4',
         '策略5 (AutoSize_AllDay_32_26)': 'S5',
         '策略1 (Baseline_Evening27)': 'S1',

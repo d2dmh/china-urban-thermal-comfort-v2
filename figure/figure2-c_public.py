@@ -31,7 +31,7 @@ warnings.filterwarnings("ignore")
 # ==================== Configuration ====================
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 GRID_DATA_DIR = os.path.join(SCRIPT_DIR, "figure2c_grid_data")
-OUTPUT_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "figure2c_output")
+OUTPUT_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "output/figure2")
 
 # ---- Plotting params (matching original figure2-c.py) ----
 FIG_SIZE = (15, 15)

@@ -209,11 +209,10 @@ ax.axis('off')
 fig.patch.set_alpha(0.0)
 ax.patch.set_alpha(0.0)
 
-output_dir = r"C:\Users\31080\Desktop\figure"
-if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
+output_dir = os.path.join(_PROJ, "output", "figure2")
+os.makedirs(output_dir, exist_ok=True)
 
-output_path = os.path.join(output_dir, "建筑气候区划_标红且自动补全版.png")
+output_path = os.path.join(output_dir, "Fig2-1_China_Building_Climate_Zones.png")
 plt.savefig(output_path, dpi=600, transparent=True, bbox_inches='tight', pad_inches=0)
 
-print(f"✅ 地图已保存至: {output_path}")
+print(f"[OK] saved: {output_path}")

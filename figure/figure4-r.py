@@ -16,15 +16,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as pe
 
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 os.environ.setdefault("NUMBA_NUM_THREADS", "1")
 
-from Code.core.epw_handler import extract_epw_pressure, get_epw_start_offset
-from Code.core.set_calculator import calculate_constrained_rh, compute_set_vectorized
-from Code.config.parameters import AIR_VELOCITY, RH_LIMIT, SET_THRESHOLD, NIGHT_HOURS
+from code.core.epw_handler import extract_epw_pressure, get_epw_start_offset
+from code.core.set_calculator import calculate_constrained_rh, compute_set_vectorized
+from code.config.parameters import AIR_VELOCITY, RH_LIMIT, SET_THRESHOLD, NIGHT_HOURS
 
 # Daytime (awake, light residential activity):
 #   MET=1.2 — ASHRAE 55, standing relaxed / sedentary in dwelling (70 W/m²)
@@ -36,12 +37,10 @@ MET_DAY   = 1.2; CLO_DAY   = 0.5
 MET_NIGHT = 0.7; CLO_NIGHT = 0.8
 
 # ================= Configuration =================
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJ = os.path.dirname(os.path.dirname(SCRIPT_DIR))
-SIM_BASE = os.path.join(PROJ, "data", "input data", "GeiMingHao_27Degree", "GeiMingHao_IndoorEnv")
-EPW_DIR = os.path.join(PROJ, "data", "input data", "epw_files")
-CLUSTER_MAP = os.path.join(PROJ, "data", "other data", "cluster_maps", "cluster_440300_深圳市.csv")
-OUT_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "output/figure4")
+SIM_BASE = os.path.join(PROJECT_ROOT, "input", "GeiMingHao_27Degree", "GeiMingHao_IndoorEnv")
+EPW_DIR = os.path.join(PROJECT_ROOT, "input", "epw")
+CLUSTER_MAP = os.path.join(PROJECT_ROOT, "input", "cluster_maps", "cluster_440300_深圳市.csv")
+OUT_DIR = os.path.join(PROJECT_ROOT, "output", "figure4")
 
 CITY = "shen1zhen4shi4"
 BLDG_TYPES = [2, 1, 0]

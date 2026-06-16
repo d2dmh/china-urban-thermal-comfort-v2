@@ -14,10 +14,10 @@ import matplotlib.pyplot as plt
 
 # ================= Configuration =================
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
-SUMMARY_PATH = os.path.join(PROJECT_ROOT, "results", "27Degree", "set_calculations",
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
+SUMMARY_PATH = os.path.join(PROJECT_ROOT, "input", "pipeline_outputs", "hourly_set",
                             "summary_uncomfortable_hours.csv")
-OUT_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "output/figure4")
+OUT_DIR = os.path.join(PROJECT_ROOT, "output", "figure4")
 
 CITY = "shen1zhen4shi4"
 SCENARIOS = ["2020 Baseline", "2040 RCP 8.5", "2060 RCP 8.5"]
@@ -35,9 +35,9 @@ STOREY_HEIGHT_FACTOR = 0.12
 MIN_FIG_HEIGHT = 3
 
 COLORS = {
-    "2020 Baseline": '#8D95AD',
-    "2040 RCP 8.5":  '#F9C5A5',
-    "2060 RCP 8.5":  '#F7D5D3',
+    "2020 Baseline": '#4575b4',
+    "2040 RCP 8.5":  '#fdae61',
+    "2060 RCP 8.5":  '#d73027',
 }
 MARKERS = {
     "2020 Baseline": 'o',
@@ -125,25 +125,14 @@ def main():
         fig_height = max(MIN_FIG_HEIGHT, len(storeys) * STOREY_HEIGHT_FACTOR + 1.5)
         fig, ax = plt.subplots(figsize=(FIG_WIDTH, fig_height))
 
-        # Plot lines for all scenarios
-        for sc in SCENARIOS:
+        # Plot scenarios in reverse (2060 first = bottom layer)
+        for sc in reversed(SCENARIOS):
             v = sc_data.get(sc)
             if v is None:
                 continue
+            ax.fill_betweenx(storeys, 0, v, color=COLORS[sc], alpha=0.2)
             ax.plot(v, storeys, color=COLORS[sc], linewidth=LINE_WIDTH_DATA,
                     marker=MARKERS[sc], markersize=MARKER_SIZE)
-
-        # Fill: blue base (0→2020), then orange band (2020→2040), then red band (2040→2060)
-        v_2020 = sc_data.get("2020 Baseline")
-        if v_2020 is not None:
-            ax.fill_betweenx(storeys, 0, v_2020, color=COLORS["2020 Baseline"], alpha=1.0)
-        for i in range(len(SCENARIOS) - 1):
-            v_lower = sc_data.get(SCENARIOS[i])
-            v_upper = sc_data.get(SCENARIOS[i + 1])
-            if v_lower is None or v_upper is None:
-                continue
-            ax.fill_betweenx(storeys, v_lower, v_upper,
-                           color=COLORS[SCENARIOS[i + 1]], alpha=1.0)
 
         # Axes
         ax.yaxis.get_major_locator().set_params(integer=True)
@@ -165,7 +154,9 @@ def main():
         plt.tight_layout()
 
         save_path = os.path.join(OUT_DIR, f"Discomfort_{b_label.replace(' ', '_')}.png")
-        fig.savefig(save_path, dpi=DPI, bbox_inches='tight')
+        fig.patch.set_alpha(0.0)
+        ax.patch.set_alpha(0.0)
+        fig.savefig(save_path, dpi=DPI, bbox_inches='tight', transparent=True)
         plt.close(fig)
         print(f"[OK] {b_label}: {save_path}")
 

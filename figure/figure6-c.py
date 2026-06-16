@@ -34,9 +34,6 @@ NIGHT_SHADE_ALPHA_SUMMARY = 0.06
 XTICK_STEP = 6               
 SHARE_Y_AXIS = False  # 关闭共享 Y 轴，各自独立寻找最优刻度
 
-# -------------------------- [新增：2020 实际电网负荷路径] --------------------------
-REAL_LOAD_PATH = os.path.join(PROJECT_ROOT, "data", "input data", "figure6", "省会城市24h电力负荷.xlsx")
-
 STRAT_COLORS = {
     'S5 (AutoSize)':  '#931832',
     'S4 (Fix_Day26)': '#D56B52',
@@ -48,32 +45,23 @@ STRAT_COLORS = {
 F4 = [
     ('S5 (AutoSize)',  'S5_Future_AutoSize_AllDay_32_26',  STRAT_COLORS['S5 (AutoSize)']),
     ('S4 (Fix_Day26)', 'S4_Future_FixedCap_AllDay_32_26',  STRAT_COLORS['S4 (Fix_Day26)']),
-    ('S3 (Fix_Day32)', 'S3_Future_FixedCap_AllDay_32_27',  STRAT_COLORS['S3 (Fix_Day32)']),
-    ('S2 (Fix_Eve26)', 'S2_Future_FixedCap_Evening26',     STRAT_COLORS['S2 (Fix_Eve26)']),
+    ('S3 (Fix_Eve26)', 'S3_Future_FixedCap_Evening26',     STRAT_COLORS['S3 (Fix_Day32)']),
+    ('S2 (Fix_Day32)', 'S2_Future_FixedCap_AllDay_32_27',  STRAT_COLORS['S2 (Fix_Eve26)']),
     ('S1 (Baseline)',  'S1b_Future_FixedCap_Evening27',    STRAT_COLORS['S1 (Baseline)']),
 ]
 
 # ============================================================
-# 🔵 路径与常数配置区
+# Paths
 # ============================================================
-try:
-    _HERE = os.path.dirname(os.path.abspath(__file__))
-except NameError:
-    _HERE = os.getcwd()
-
-PROJECT_ROOT = _HERE
-for _ in range(10):
-    if os.path.exists(os.path.join(PROJECT_ROOT, 'config', 'paths.py')):
-        break
-    PROJECT_ROOT = os.path.dirname(PROJECT_ROOT)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-SCRIPT_DIR = _HERE
-EPW_DIR = os.path.join(PROJECT_ROOT, "data", "input data", "epw_files", "2060-rcp8.5")
-
-OUTPUT_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "figure6c_output")
-CACHE_DIR = os.path.join(PROJECT_ROOT, "data", "input data", "figure6")
+EPW_DIR = os.path.join(PROJECT_ROOT, "input", "epw", "2060-rcp8.5")
+OUTPUT_DIR = os.path.join(PROJECT_ROOT, "output", "figure6")
+CACHE_DIR = os.path.join(PROJECT_ROOT, "input", "figure6")
+REAL_LOAD_PATH = os.path.join(PROJECT_ROOT, "input", "figure6", "省会城市24h电力负荷.xlsx")
 
 CITIES = [
     ('北京市', 'Beijing',   'bei3jing1shi4',  '110000'),
@@ -377,8 +365,10 @@ def main():
 
         if not REMOVE_ALL_TEXT:
             handles = [plt.Line2D([0], [0], color=c, lw=2.5) for _, _, c in F4] + [real_line_legend]
-            labels = [l for l, _, _ in F4] + [real_line_legend.get_label()]
-            axes[0].legend(handles, labels, title='Strategy / Grid Context', title_fontsize=12, fontsize=11, frameon=False, loc='upper left')
+            labels_for_legend = [l for l, _, _ in F4] + [real_line_legend.get_label()]
+            axes[0].legend(handles, labels_for_legend,
+                          title='Strategy / Grid Context', title_fontsize=12, fontsize=11,
+                          frameon=False, loc='upper left')
             fig.suptitle(f'{en}: Citywide Midsummer Cooling Load vs 2020 Grid Load', fontsize=18, fontweight='bold', y=1.05)
 
         fig.tight_layout()
@@ -413,8 +403,9 @@ def main():
 
     if not REMOVE_ALL_TEXT:
         handles = [plt.Line2D([0], [0], color=c, lw=2.5) for _, _, c in F4] + [real_line_legend]
-        labels = [l for l, _, _ in F4] + [real_line_legend.get_label()]
-        fig.legend(handles, labels, title='Strategy & Grid Context', title_fontsize=12,
+        summary_labels = [l for l, _, _ in F4] + [real_line_legend.get_label()]
+        fig.legend(handles, summary_labels,
+                   title='Strategy & Grid Context', title_fontsize=12,
                    fontsize=10, frameon=False, loc='upper center', ncol=6, bbox_to_anchor=(0.5, 0.005))
         fig.suptitle('Typical Midsummer Weekday Cooling Load vs 2020 Grid Load Shape',
                      fontsize=18, fontweight='bold', y=1.03)

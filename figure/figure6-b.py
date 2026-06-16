@@ -24,9 +24,9 @@ PRINT_CONSOLE_STATS = True      # 【控制台静默开关】False: 关闭终端
 
 # ---- 路径配置 ----
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__)) if '__file__' in globals() else os.getcwd()
-PROJECT_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
-DATA_DIR = os.path.join(PROJECT_ROOT, "data", "input data", "figure6")
-OUTPUT_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "figure6b_output")
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
+DATA_DIR = os.path.join(PROJECT_ROOT, "input", "figure6")
+OUTPUT_DIR = os.path.join(PROJECT_ROOT, "output", "figure6")
 
 # 基础能耗数据路径
 EC_PATH = os.path.join(DATA_DIR, "energy_capacity_summary.csv")
