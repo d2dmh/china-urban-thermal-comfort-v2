@@ -132,6 +132,10 @@ python code/run_all.py
 | `china_city_boundary_shp/` | 31 MB | City-level administrative boundaries |
 | `china_ninedash_shp/` | 16 KB | Nine-dash line (九段线) |
 
+### Beijing building data preview
+
+![Beijing Buildings Street Basemap](beijing_buildings_street_basemap.png)
+
 ## Reproducibility notes
 
 - All paths are **repo-relative** (`os.path.join(PROJECT_ROOT, "input", ...)`). Works on any OS.
